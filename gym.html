@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELITEFIT — Premium Performance Gym</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   ROOT & RESET
+   ============================================================ */
+:root {
+  --black:   #070708;
+  --dark:    #0e0e10;
+  --card:    #141416;
+  --border:  rgba(255,255,255,0.07);
+  --white:   #f5f4f0;
+  --cream:   #e8e4d8;
+  --accent:  #d4ff00;       /* electric lime — the signature colour */
+  --accent2: #ff3c3c;
+  --text:    #9a9898;
+  --ff-display: 'Bebas Neue', sans-serif;
+  --ff-cond:    'Barlow Condensed', sans-serif;
+  --ff-body:    'Barlow', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+
+html { scroll-behavior: smooth; font-size:16px; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--ff-body);
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* scrollbar */
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--accent); }
+
+/* ============================================================
+   CUSTOM CURSOR
+   ============================================================ */
+#cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: transform 0.08s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+  mix-blend-mode: difference;
+}
+#cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%,-50%);
+  transition: transform 0.18s ease, width 0.25s ease, height 0.25s ease;
+  mix-blend-mode: difference;
+}
+body:hover #cursor { opacity:1; }
+.cursor-hover #cursor { width:6px; height:6px; }
+.cursor-hover #cursor-ring { width:54px; height:54px; }
+
+/* ============================================================
+   NOISE OVERLAY
+   ============================================================ */
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events:none;
+  z-index:9990;
+}
+
+/* ============================================================
+   LOADER
+   ============================================================ */
+#loader {
+  position:fixed; inset:0;
+  background: var(--black);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  z-index:10000;
+  transition: opacity 0.6s ease 0.3s, visibility 0.6s ease 0.3s;
+}
+#loader.hide { opacity:0; visibility:hidden; }
+.loader-logo {
+  font-family: var(--ff-display);
+  font-size: clamp(3rem,10vw,7rem);
+  letter-spacing: 0.05em;
+  color: var(--white);
+  overflow:hidden;
+  position:relative;
+}
+.loader-logo span { display:inline-block; }
+.loader-bar {
+  width: 200px; height:2px;
+  background: var(--border);
+  margin-top: 32px;
+  overflow:hidden;
+  border-radius:2px;
+}
+.loader-fill {
+  height:100%; width:0%;
+  background: var(--accent);
+  animation: loadFill 1.8s cubic-bezier(0.7,0,0.3,1) forwards;
+}
+@keyframes loadFill { to { width:100%; } }
+.loader-num {
+  font-family: var(--ff-cond);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--text);
+  margin-top:16px;
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+nav {
+  position: fixed;
+  top:0; left:0; right:0;
+  z-index: 100;
+  padding: 24px 48px;
+  display:flex; align-items:center; justify-content:space-between;
+  transition: padding 0.4s ease, background 0.4s ease;
+}
+nav.scrolled {
+  padding: 16px 48px;
+  background: rgba(7,7,8,0.92);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--ff-display);
+  font-size: 1.8rem;
+  letter-spacing: 0.08em;
+  color: var(--white);
+  text-decoration:none;
+  position:relative;
+}
+.nav-logo::after {
+  content:'';
+  position:absolute; bottom:-4px; left:0;
+  width:100%; height:2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+.nav-logo:hover::after { transform: scaleX(1); }
+
+.nav-links { display:flex; gap:36px; align-items:center; }
+.nav-links a {
+  font-family: var(--ff-cond);
+  font-size: 0.9rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration:none;
+  transition: color 0.2s ease;
+  position:relative;
+}
+.nav-links a::after {
+  content:'';
+  position:absolute; bottom:-4px; left:0;
+  width:0; height:1px;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { width:100%; }
+
+.nav-cta {
+  font-family: var(--ff-cond);
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 10px 24px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  background: transparent;
+  cursor: none;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.nav-cta:hover { background: var(--accent); color: var(--black); }
+
+/* hamburger */
+.hamburger {
+  display:none;
+  flex-direction:column;
+  gap:5px;
+  cursor:none;
+  padding:4px;
+}
+.hamburger span {
+  display:block; width:28px; height:2px;
+  background: var(--white);
+  transition: all 0.3s ease;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity:0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* mobile menu */
+.mobile-menu {
+  position:fixed;
+  top:0; right:0;
+  width: min(340px, 90vw);
+  height:100vh;
+  background: var(--dark);
+  border-left: 1px solid var(--border);
+  z-index:99;
+  transform: translateX(100%);
+  transition: transform 0.5s cubic-bezier(0.77,0,0.175,1);
+  display:flex; flex-direction:column;
+  padding: 100px 40px 48px;
+  gap: 8px;
+}
+.mobile-menu.open { transform: translateX(0); }
+.mobile-menu a {
+  font-family: var(--ff-display);
+  font-size: 2.5rem;
+  color: var(--white);
+  text-decoration:none;
+  letter-spacing:0.05em;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s ease, padding-left 0.2s ease;
+}
+.mobile-menu a:hover { color: var(--accent); padding-left: 12px; }
+.mobile-menu-footer {
+  margin-top:auto;
+  font-family: var(--ff-cond);
+  font-size: 0.75rem;
+  letter-spacing:0.2em;
+  color: var(--text);
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  position:relative;
+  height: 100vh; min-height: 600px;
+  display:flex; flex-direction:column;
+  justify-content:flex-end;
+  padding: 0 48px 64px;
+  overflow:hidden;
+}
+
+.hero-video {
+  position:absolute; inset:0;
+  z-index:0;
+}
+.hero-video img {
+  width:100%; height:100%;
+  object-fit:cover;
+  object-position: center 30%;
+  filter: brightness(0.35);
+}
+
+/* diagonal slice overlay */
+.hero-slice {
+  position:absolute;
+  bottom:0; left:0; right:0;
+  height:220px;
+  background: linear-gradient(to bottom, transparent, var(--black));
+  z-index:1;
+  clip-path: polygon(0 60%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+.hero-content {
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns: 1fr auto;
+  align-items:flex-end;
+  gap:40px;
+}
+
+.hero-headline {
+  font-family: var(--ff-display);
+  font-size: clamp(4.5rem, 13vw, 14rem);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+.hero-headline em {
+  font-style:normal;
+  color: var(--accent);
+  display:block;
+}
+
+.hero-sub {
+  max-width:340px;
+  text-align:right;
+}
+.hero-sub p {
+  font-family: var(--ff-cond);
+  font-size: 0.9rem;
+  letter-spacing:0.15em;
+  color: var(--text);
+  text-transform:uppercase;
+  margin-bottom:32px;
+  line-height:1.7;
+}
+.hero-btns {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  align-items:flex-end;
+}
+
+.hero-scroll {
+  position:absolute;
+  bottom:24px; left:50%;
+  transform:translateX(-50%);
+  z-index:2;
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  font-family:var(--ff-cond);
+  font-size:0.65rem;
+  letter-spacing:0.25em;
+  color: var(--text);
+  text-transform:uppercase;
+  animation: scrollBob 2s ease-in-out infinite;
+}
+.hero-scroll::after {
+  content:'';
+  display:block;
+  width:1px; height:50px;
+  background: linear-gradient(to bottom, var(--text), transparent);
+  animation: lineDrop 2s ease-in-out infinite;
+}
+@keyframes scrollBob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+@keyframes lineDrop { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+/* hero stat bar */
+.hero-stats {
+  position:absolute;
+  top:50%;
+  right:0;
+  transform:translateY(-50%);
+  z-index:2;
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  border-left: 1px solid var(--border);
+}
+.hero-stat {
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--border);
+  text-align:center;
+}
+.hero-stat-num {
+  font-family: var(--ff-display);
+  font-size: 2.2rem;
+  color: var(--accent);
+  line-height:1;
+}
+.hero-stat-label {
+  font-family: var(--ff-cond);
+  font-size: 0.7rem;
+  letter-spacing:0.18em;
+  color: var(--text);
+  text-transform:uppercase;
+  margin-top:4px;
+}
+
+/* ============================================================
+   SECTION COMMONS
+   ============================================================ */
+section { position:relative; }
+
+.section-label {
+  font-family: var(--ff-cond);
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  text-transform:uppercase;
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:20px;
+}
+.section-label::before {
+  content:'';
+  display:block; width:40px; height:1px;
+  background: var(--accent);
+}
+
+.section-title {
+  font-family: var(--ff-display);
+  font-size: clamp(2.8rem, 6vw, 6rem);
+  line-height:0.95;
+  letter-spacing:0.02em;
+  color: var(--white);
+}
+.section-title em {
+  font-style:normal;
+  color: var(--accent);
+}
+
+/* reveal animations */
+.reveal {
+  opacity:0;
+  transform: translateY(60px);
+  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal.active { opacity:1; transform:translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ============================================================
+   MARQUEE
+   ============================================================ */
+.marquee-wrap {
+  overflow:hidden;
+  background: var(--accent);
+  padding: 14px 0;
+  border-top: 0;
+  border-bottom: 0;
+}
+.marquee-track {
+  display:flex;
+  gap:0;
+  animation: marqueeRoll 22s linear infinite;
+  white-space: nowrap;
+}
+.marquee-item {
+  font-family: var(--ff-display);
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  color: var(--black);
+  padding: 0 32px;
+  flex-shrink:0;
+  text-transform:uppercase;
+}
+.marquee-item span { color:rgba(0,0,0,0.35); margin-right:32px; }
+@keyframes marqueeRoll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+.about {
+  padding: 120px 48px;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items:center;
+}
+
+.about-img-stack {
+  position:relative;
+  height: 580px;
+}
+.about-img-main {
+  position:absolute;
+  top:0; left:0;
+  width:75%;
+  height:82%;
+  object-fit:cover;
+  filter: brightness(0.85) saturate(0.8);
+}
+.about-img-accent {
+  position:absolute;
+  bottom:0; right:0;
+  width:52%;
+  height:52%;
+  object-fit:cover;
+  border: 4px solid var(--black);
+  filter: brightness(0.85);
+}
+.about-img-badge {
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:100px; height:100px;
+  background: var(--accent);
+  border-radius:50%;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  z-index:3;
+}
+.about-img-badge span:first-child {
+  font-family: var(--ff-display);
+  font-size:2rem;
+  color: var(--black);
+  line-height:1;
+}
+.about-img-badge span:last-child {
+  font-family: var(--ff-cond);
+  font-size:0.55rem;
+  letter-spacing:0.15em;
+  color: var(--black);
+  text-transform:uppercase;
+}
+
+.about-text p {
+  font-size:1rem;
+  line-height:1.8;
+  color: var(--text);
+  margin-bottom:32px;
+  max-width:460px;
+}
+
+.about-features {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-top:40px;
+}
+.about-feature {
+  padding: 24px;
+  border: 1px solid var(--border);
+  position:relative;
+  overflow:hidden;
+  transition: border-color 0.3s ease;
+}
+.about-feature::before {
+  content:'';
+  position:absolute;
+  top:0; left:0;
+  width:3px; height:0%;
+  background: var(--accent);
+  transition: height 0.4s ease;
+}
+.about-feature:hover { border-color: rgba(212,255,0,0.3); }
+.about-feature:hover::before { height:100%; }
+.about-feature h4 {
+  font-family: var(--ff-cond);
+  font-size:0.85rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color: var(--white);
+  margin-bottom:8px;
+}
+.about-feature p {
+  font-size:0.85rem;
+  color: var(--text);
+  line-height:1.6;
+  margin:0;
+}
+
+/* ============================================================
+   SERVICES
+   ============================================================ */
+.services {
+  padding: 120px 48px;
+  background: var(--dark);
+}
+
+.services-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  margin-bottom:72px;
+}
+
+.services-grid {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:2px;
+}
+
+.service-card {
+  position:relative;
+  overflow:hidden;
+  aspect-ratio: 3/4;
+  cursor:none;
+  background: var(--card);
+}
+.service-card img {
+  width:100%; height:100%;
+  object-fit:cover;
+  filter: brightness(0.4) saturate(0.7);
+  transition: transform 0.7s cubic-bezier(0.16,1,0.3,1), filter 0.7s ease;
+}
+.service-card:hover img {
+  transform: scale(1.08);
+  filter: brightness(0.3) saturate(0.5);
+}
+.service-card-content {
+  position:absolute;
+  inset:0;
+  padding:32px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+}
+.service-num {
+  position:absolute;
+  top:24px; right:24px;
+  font-family: var(--ff-display);
+  font-size: 5rem;
+  color:rgba(255,255,255,0.06);
+  line-height:1;
+  transition: color 0.3s ease;
+}
+.service-card:hover .service-num { color:rgba(212,255,0,0.12); }
+.service-tag {
+  font-family: var(--ff-cond);
+  font-size:0.7rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color: var(--accent);
+  margin-bottom:8px;
+}
+.service-name {
+  font-family: var(--ff-display);
+  font-size:2.2rem;
+  letter-spacing:0.04em;
+  color: var(--white);
+  line-height:1;
+  margin-bottom:12px;
+}
+.service-desc {
+  font-size:0.85rem;
+  color: var(--text);
+  line-height:1.7;
+  max-width:280px;
+  opacity:0;
+  transform: translateY(16px);
+  transition: opacity 0.4s ease 0.1s, transform 0.4s ease 0.1s;
+}
+.service-card:hover .service-desc { opacity:1; transform:translateY(0); }
+.service-arrow {
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-family:var(--ff-cond);
+  font-size:0.75rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color: var(--accent);
+  margin-top:16px;
+  opacity:0;
+  transform: translateX(-12px);
+  transition: opacity 0.4s ease 0.15s, transform 0.4s ease 0.15s;
+}
+.service-arrow::after { content:'→'; font-size:1rem; }
+.service-card:hover .service-arrow { opacity:1; transform:translateX(0); }
+
+/* ============================================================
+   PRICING
+   ============================================================ */
+.pricing {
+  padding: 120px 48px;
+}
+
+.pricing-grid {
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:2px;
+  margin-top:72px;
+}
+
+.plan-card {
+  padding: 56px 40px;
+  border: 1px solid var(--border);
+  position:relative;
+  overflow:hidden;
+  transition: border-color 0.3s ease;
+  cursor:none;
+}
+.plan-card.featured {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.plan-card::before {
+  content:'';
+  position:absolute; top:0; left:0; right:0;
+  height:3px;
+  background: var(--accent);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition: transform 0.4s ease;
+}
+.plan-card:not(.featured):hover::before { transform:scaleX(1); }
+.plan-card:not(.featured):hover { border-color:rgba(212,255,0,0.3); }
+
+.plan-label {
+  font-family: var(--ff-cond);
+  font-size:0.75rem;
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  color: var(--text);
+  margin-bottom:32px;
+}
+.plan-card.featured .plan-label { color: rgba(0,0,0,0.5); }
+
+.plan-price {
+  font-family: var(--ff-display);
+  font-size: clamp(3.5rem,7vw,6rem);
+  line-height:1;
+  color: var(--white);
+  display:flex;
+  align-items:flex-start;
+  gap:4px;
+}
+.plan-card.featured .plan-price { color: var(--black); }
+.plan-currency {
+  font-family: var(--ff-cond);
+  font-size:1.2rem;
+  color: var(--text);
+  margin-top:10px;
+}
+.plan-card.featured .plan-currency { color: rgba(0,0,0,0.5); }
+.plan-period {
+  font-family: var(--ff-cond);
+  font-size:0.8rem;
+  color: var(--text);
+  letter-spacing:0.12em;
+  margin-top:8px;
+  margin-bottom:32px;
+  display:block;
+}
+.plan-card.featured .plan-period { color: rgba(0,0,0,0.5); }
+
+.plan-perks {
+  list-style:none;
+  margin-bottom:48px;
+  display:flex; flex-direction:column; gap:14px;
+}
+.plan-perks li {
+  display:flex; align-items:center; gap:12px;
+  font-size:0.9rem;
+  color: var(--text);
+  font-family: var(--ff-cond);
+  letter-spacing:0.05em;
+}
+.plan-card.featured .plan-perks li { color:rgba(0,0,0,0.7); }
+.plan-perks li::before {
+  content:'';
+  width:20px; height:1px;
+  background: var(--accent);
+  flex-shrink:0;
+}
+.plan-card.featured .plan-perks li::before { background: var(--black); }
+
+.btn-plan {
+  width:100%;
+  padding:16px;
+  font-family: var(--ff-cond);
+  font-size:0.85rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--white);
+  cursor:none;
+  transition: all 0.3s ease;
+}
+.btn-plan:hover { background:var(--white); color:var(--black); border-color:var(--white); }
+.plan-card.featured .btn-plan {
+  background: var(--black);
+  color: var(--accent);
+  border-color: var(--black);
+}
+.plan-card.featured .btn-plan:hover { background:rgba(0,0,0,0.85); }
+
+.plan-badge {
+  position:absolute;
+  top:24px; right:24px;
+  font-family: var(--ff-cond);
+  font-size:0.65rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  background: var(--black);
+  color: var(--accent);
+  padding: 5px 12px;
+}
+
+/* ============================================================
+   TESTIMONIALS
+   ============================================================ */
+.testimonials {
+  padding: 120px 48px;
+  background: var(--dark);
+}
+
+.testimonials-layout {
+  display:grid;
+  grid-template-columns: 1fr 2fr;
+  gap:80px;
+  align-items:start;
+  margin-top:72px;
+}
+
+.testimonials-left {
+  position:sticky;
+  top:120px;
+}
+.testi-count {
+  font-family: var(--ff-display);
+  font-size: 8rem;
+  color: rgba(255,255,255,0.04);
+  line-height:1;
+  margin-bottom:-30px;
+  user-select:none;
+}
+.testi-nav {
+  display:flex; gap:12px; margin-top:48px;
+}
+.testi-dot {
+  width:8px; height:8px;
+  background: var(--border);
+  border:none;
+  cursor:none;
+  transition: all 0.3s ease;
+}
+.testi-dot.active { background:var(--accent); width:32px; }
+
+.testimonials-right {
+  display:flex; flex-direction:column; gap:2px;
+}
+
+.testi-card {
+  padding:40px;
+  border: 1px solid var(--border);
+  position:relative;
+  transition: border-color 0.3s ease, background 0.3s ease;
+  cursor:none;
+}
+.testi-card:hover { border-color:rgba(212,255,0,0.25); background: rgba(255,255,255,0.02); }
+
+.testi-quote-icon {
+  font-family: var(--ff-display);
+  font-size: 4rem;
+  color: var(--accent);
+  line-height:1;
+  opacity:0.5;
+  margin-bottom:16px;
+}
+.testi-text {
+  font-size:1.05rem;
+  line-height:1.75;
+  color: var(--white);
+  margin-bottom:24px;
+  font-weight:300;
+}
+.testi-author {
+  display:flex; align-items:center; gap:16px;
+}
+.testi-avatar {
+  width:44px; height:44px;
+  border-radius:50%;
+  background: var(--border);
+  overflow:hidden;
+  flex-shrink:0;
+}
+.testi-avatar img { width:100%; height:100%; object-fit:cover; }
+.testi-name {
+  font-family: var(--ff-cond);
+  font-size:0.9rem;
+  letter-spacing:0.1em;
+  color:var(--white);
+  text-transform:uppercase;
+}
+.testi-role {
+  font-size:0.8rem;
+  color: var(--text);
+  margin-top:2px;
+}
+.testi-stars {
+  margin-left:auto;
+  color: var(--accent);
+  letter-spacing:2px;
+}
+
+/* ============================================================
+   CTA BAND
+   ============================================================ */
+.cta-band {
+  padding: 120px 48px;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:80px;
+  align-items:center;
+  background: var(--accent);
+  position:relative;
+  overflow:hidden;
+}
+.cta-band::before {
+  content:'ELITE';
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  font-family: var(--ff-display);
+  font-size: clamp(8rem, 22vw, 20rem);
+  color:rgba(0,0,0,0.06);
+  white-space:nowrap;
+  pointer-events:none;
+}
+.cta-band .section-label::before { background: var(--black); }
+.cta-band .section-label { color:rgba(0,0,0,0.6); }
+.cta-band .section-title { color: var(--black); }
+.cta-band p {
+  color:rgba(0,0,0,0.6);
+  margin-top:20px;
+  font-size:1rem;
+  line-height:1.7;
+}
+.cta-right {
+  display:flex; flex-direction:column; gap:20px; align-items:flex-start;
+}
+.cta-input-group {
+  display:flex; width:100%;
+}
+.cta-input {
+  flex:1;
+  padding:16px 20px;
+  background: var(--black);
+  border:none;
+  color:var(--white);
+  font-family:var(--ff-cond);
+  font-size:0.9rem;
+  letter-spacing:0.1em;
+  outline:none;
+}
+.cta-input::placeholder { color:var(--text); }
+.cta-submit {
+  padding:16px 28px;
+  background: var(--white);
+  color: var(--black);
+  border:none;
+  font-family:var(--ff-cond);
+  font-size:0.8rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  cursor:none;
+  transition: background 0.2s ease;
+}
+.cta-submit:hover { background: #e0e0e0; }
+.cta-note {
+  font-family:var(--ff-cond);
+  font-size:0.72rem;
+  letter-spacing:0.15em;
+  color:rgba(0,0,0,0.45);
+  text-transform:uppercase;
+}
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.contact {
+  padding: 120px 48px;
+}
+.contact-grid {
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:80px;
+  margin-top:72px;
+}
+.contact-info { display:flex; flex-direction:column; gap:40px; }
+.contact-item h4 {
+  font-family: var(--ff-cond);
+  font-size:0.7rem;
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:8px;
+}
+.contact-item p, .contact-item a {
+  font-size:1rem;
+  color:var(--white);
+  text-decoration:none;
+  line-height:1.6;
+  transition:color 0.2s;
+}
+.contact-item a:hover { color:var(--accent); }
+
+.contact-form { display:flex; flex-direction:column; gap:16px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.form-field {
+  display:flex; flex-direction:column; gap:8px;
+}
+.form-field label {
+  font-family:var(--ff-cond);
+  font-size:0.7rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--text);
+}
+.form-field input, .form-field textarea, .form-field select {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color:var(--white);
+  padding:14px 16px;
+  font-family:var(--ff-body);
+  font-size:0.9rem;
+  outline:none;
+  transition: border-color 0.3s ease;
+  resize:none;
+}
+.form-field input:focus, .form-field textarea:focus, .form-field select:focus {
+  border-color: var(--accent);
+}
+.form-field textarea { height:140px; }
+.btn-submit {
+  padding:16px 40px;
+  background: var(--accent);
+  color: var(--black);
+  border:none;
+  font-family:var(--ff-cond);
+  font-size:0.85rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  cursor:none;
+  transition: opacity 0.2s ease;
+  align-self:flex-start;
+}
+.btn-submit:hover { opacity:0.85; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  background: var(--black);
+  border-top: 1px solid var(--border);
+  padding: 80px 48px 40px;
+}
+.footer-grid {
+  display:grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap:60px;
+  margin-bottom:80px;
+}
+.footer-brand .logo {
+  font-family:var(--ff-display);
+  font-size:2.5rem;
+  color:var(--white);
+  letter-spacing:0.06em;
+  margin-bottom:20px;
+  display:block;
+}
+.footer-brand p {
+  font-size:0.9rem;
+  color:var(--text);
+  line-height:1.7;
+  max-width:280px;
+  margin-bottom:28px;
+}
+.social-row { display:flex; gap:12px; }
+.social-link {
+  width:40px; height:40px;
+  border: 1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  color:var(--text);
+  text-decoration:none;
+  font-size:0.8rem;
+  font-family:var(--ff-cond);
+  letter-spacing:0.05em;
+  transition: all 0.2s ease;
+}
+.social-link:hover { background:var(--accent); color:var(--black); border-color:var(--accent); }
+
+.footer-col h5 {
+  font-family:var(--ff-cond);
+  font-size:0.7rem;
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  color:var(--white);
+  margin-bottom:24px;
+}
+.footer-col ul { list-style:none; display:flex; flex-direction:column; gap:12px; }
+.footer-col ul li a {
+  font-size:0.9rem;
+  color:var(--text);
+  text-decoration:none;
+  transition:color 0.2s ease;
+}
+.footer-col ul li a:hover { color:var(--accent); }
+
+.footer-bottom {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding-top:32px;
+  border-top:1px solid var(--border);
+  font-family:var(--ff-cond);
+  font-size:0.75rem;
+  letter-spacing:0.12em;
+  color:var(--text);
+}
+
+/* ============================================================
+   BUTTONS (shared)
+   ============================================================ */
+.btn-primary {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:16px 36px;
+  background: var(--accent);
+  color: var(--black);
+  font-family: var(--ff-cond);
+  font-size:0.85rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  border:none;
+  cursor:none;
+  transition: opacity 0.2s ease, gap 0.2s ease;
+}
+.btn-primary:hover { opacity:0.88; gap:16px; }
+.btn-primary::after { content:'→'; font-size:1rem; }
+
+.btn-ghost {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:16px 36px;
+  background: transparent;
+  color: var(--white);
+  font-family: var(--ff-cond);
+  font-size:0.85rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  border: 1px solid rgba(255,255,255,0.25);
+  cursor:none;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
+
+/* ============================================================
+   RESPONSIVE — TABLET
+   ============================================================ */
+@media (max-width: 1024px) {
+  nav { padding: 20px 28px; }
+  nav.scrolled { padding:14px 28px; }
+  .nav-links { gap:24px; }
+  .hero { padding: 0 28px 80px; }
+  .hero-stats { display:none; }
+  .about { padding:80px 28px; gap:48px; }
+  .services { padding:80px 28px; }
+  .services-grid { grid-template-columns:1fr 1fr; }
+  .services-grid .service-card:last-child { display:none; }
+  .pricing { padding:80px 28px; }
+  .pricing-grid { grid-template-columns:1fr 1fr; }
+  .pricing-grid .plan-card:first-child { display:none; }
+  .testimonials { padding:80px 28px; }
+  .testimonials-layout { grid-template-columns:1fr; gap:48px; }
+  .testimonials-left { position:static; }
+  .cta-band { padding:80px 28px; gap:40px; }
+  .contact { padding:80px 28px; }
+  footer { padding:60px 28px 32px; }
+  .footer-grid { grid-template-columns:1fr 1fr; gap:40px; }
+}
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+   ============================================================ */
+@media (max-width: 768px) {
+  body { cursor:auto; }
+  #cursor, #cursor-ring { display:none; }
+
+  nav { padding:18px 20px; }
+  nav.scrolled { padding:14px 20px; }
+  .nav-links, .nav-cta { display:none; }
+  .hamburger { display:flex; }
+
+  .hero {
+    padding: 0 20px 60px;
+    justify-content:center;
+    text-align:center;
+  }
+  .hero-content {
+    grid-template-columns:1fr;
+    justify-items:center;
+    gap:24px;
+  }
+  .hero-headline { font-size: clamp(3.5rem, 16vw, 5.5rem); text-align:center; }
+  .hero-sub { text-align:center; max-width:100%; }
+  .hero-sub p { margin-bottom:24px; }
+  .hero-btns { flex-direction:row; justify-content:center; flex-wrap:wrap; }
+  .hero-stats { display:none; }
+  .hero-scroll { display:none; }
+
+  .about { grid-template-columns:1fr; padding:64px 20px; gap:40px; }
+  .about-img-stack { height:360px; }
+  .about-features { grid-template-columns:1fr; }
+
+  .services { padding:64px 20px; }
+  .services-header { flex-direction:column; align-items:flex-start; gap:20px; }
+  .services-grid { grid-template-columns:1fr; }
+  .services-grid .service-card { aspect-ratio:4/3; }
+  .services-grid .service-card:last-child { display:block; }
+  .service-desc { opacity:1; transform:none; }
+  .service-arrow { opacity:1; transform:none; }
+
+  .pricing { padding:64px 20px; }
+  .pricing-grid { grid-template-columns:1fr; }
+  .pricing-grid .plan-card:first-child { display:block; }
+
+  .testimonials { padding:64px 20px; }
+  .testimonials-layout { gap:32px; }
+
+  .cta-band { grid-template-columns:1fr; padding:64px 20px; gap:36px; }
+  .cta-input-group { flex-direction:column; }
+  .cta-submit { width:100%; }
+
+  .contact { padding:64px 20px; }
+  .contact-grid { grid-template-columns:1fr; gap:48px; }
+  .form-row { grid-template-columns:1fr; }
+
+  footer { padding:48px 20px 28px; }
+  .footer-grid { grid-template-columns:1fr; gap:32px; }
+  .footer-bottom { flex-direction:column; gap:12px; text-align:center; }
+
+  .btn-primary, .btn-ghost { padding:14px 28px; }
+  .section-title { font-size:clamp(2.4rem,11vw,4rem); }
+
+  .marquee-item { font-size:0.85rem; padding:0 20px; }
+}
+</style>
+</head>
+
+<body>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-logo">
+    <span>ELITEFIT</span>
+  </div>
+  <div class="loader-bar"><div class="loader-fill"></div></div>
+  <div class="loader-num" id="loaderNum">0%</div>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">ELITEFIT</a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#pricing">Plans</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <button class="nav-cta">Join Now</button>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" class="mm-link">About</a>
+  <a href="#services" class="mm-link">Services</a>
+  <a href="#pricing" class="mm-link">Plans</a>
+  <a href="#contact" class="mm-link">Contact</a>
+  <div class="mobile-menu-footer">© 2026 EliteFit Gym</div>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-video">
+    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070" alt="Gym interior" loading="eager">
+  </div>
+  <div class="hero-slice"></div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">12K+</div>
+      <div class="hero-stat-label">Members</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">48</div>
+      <div class="hero-stat-label">Trainers</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">15Y</div>
+      <div class="hero-stat-label">Excellence</div>
+    </div>
+  </div>
+
+  <div class="hero-content reveal">
+    <h1 class="hero-headline">
+      TRAIN<br><em>HARDER</em><br>LIVE<br>STRONGER
+    </h1>
+    <div class="hero-sub">
+      <p>Premium performance<br>training for the<br>relentless few.</p>
+      <div class="hero-btns">
+        <button class="btn-primary">Start Now</button>
+        <button class="btn-ghost">Free Trial</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marqueeTrack">
+    <span class="marquee-item">Weight Training <span>✦</span></span>
+    <span class="marquee-item">Personal Coaching <span>✦</span></span>
+    <span class="marquee-item">CrossFit <span>✦</span></span>
+    <span class="marquee-item">Nutrition Plans <span>✦</span></span>
+    <span class="marquee-item">Recovery Lounge <span>✦</span></span>
+    <span class="marquee-item">Elite Community <span>✦</span></span>
+    <span class="marquee-item">Weight Training <span>✦</span></span>
+    <span class="marquee-item">Personal Coaching <span>✦</span></span>
+    <span class="marquee-item">CrossFit <span>✦</span></span>
+    <span class="marquee-item">Nutrition Plans <span>✦</span></span>
+    <span class="marquee-item">Recovery Lounge <span>✦</span></span>
+    <span class="marquee-item">Elite Community <span>✦</span></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-img-stack reveal">
+    <img class="about-img-main" src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1200" alt="Training">
+    <img class="about-img-accent" src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=900" alt="Equipment">
+    <div class="about-img-badge">
+      <span>15</span>
+      <span>Years</span>
+    </div>
+  </div>
+
+  <div class="about-text reveal reveal-delay-2">
+    <div class="section-label">Our Story</div>
+    <h2 class="section-title">BUILT FOR<br>THE <em>ELITE</em></h2>
+    <p style="margin-top:24px;">We don't just build bodies — we forge discipline. Since 2009, EliteFit has been the chosen training ground for athletes, executives, and anyone committed to peak performance.</p>
+    <p>Our 22,000 sq ft facility features Olympic-grade equipment, biomechanics labs, cold-plunge suites, and a team of world-class coaches who've trained champions.</p>
+
+    <div class="about-features">
+      <div class="about-feature">
+        <h4>22,000 sq ft</h4>
+        <p>World-class training floors with zero compromises.</p>
+      </div>
+      <div class="about-feature">
+        <h4>48 Expert Coaches</h4>
+        <p>Certified specialists across every discipline.</p>
+      </div>
+      <div class="about-feature">
+        <h4>Open 24/7</h4>
+        <p>Train on your schedule, not ours.</p>
+      </div>
+      <div class="about-feature">
+        <h4>Recovery Suite</h4>
+        <p>Ice baths, infrared saunas & massage therapy.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header reveal">
+    <div>
+      <div class="section-label">What We Offer</div>
+      <h2 class="section-title">OUR<br><em>SERVICES</em></h2>
+    </div>
+    <button class="btn-ghost reveal reveal-delay-2">View All Programs</button>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=1200" alt="Weight Training">
+      <div class="service-card-content">
+        <div class="service-num">01</div>
+        <div class="service-tag">Strength</div>
+        <div class="service-name">WEIGHT<br>TRAINING</div>
+        <p class="service-desc">Progressive overload programs built around your goals. From hypertrophy to powerlifting — every rep counts.</p>
+        <span class="service-arrow">Learn more</span>
+      </div>
+    </div>
+    <div class="service-card reveal reveal-delay-1">
+      <img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=1200" alt="Personal Training">
+      <div class="service-card-content">
+        <div class="service-num">02</div>
+        <div class="service-tag">Coaching</div>
+        <div class="service-name">PERSONAL<br>TRAINING</div>
+        <p class="service-desc">1-on-1 coaching tailored to your body, your timeline, your goals. Results-guaranteed methodology.</p>
+        <span class="service-arrow">Learn more</span>
+      </div>
+    </div>
+    <div class="service-card reveal reveal-delay-2">
+      <img src="https://images.unsplash.com/photo-1534258936925-c58bed479fcb?q=80&w=1200" alt="CrossFit">
+      <div class="service-card-content">
+        <div class="service-num">03</div>
+        <div class="service-tag">Performance</div>
+        <div class="service-name">CROSS<br>FIT</div>
+        <p class="service-desc">High-intensity functional training that builds endurance, power, and mental grit simultaneously.</p>
+        <span class="service-arrow">Learn more</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="reveal">
+    <div class="section-label">Membership</div>
+    <h2 class="section-title">CHOOSE<br>YOUR <em>PLAN</em></h2>
+  </div>
+
+  <div class="pricing-grid">
+    <div class="plan-card reveal">
+      <div class="plan-label">Monthly Access</div>
+      <div class="plan-price"><span class="plan-currency">$</span>49</div>
+      <span class="plan-period">per month</span>
+      <ul class="plan-perks">
+        <li>Full gym access</li>
+        <li>Group classes included</li>
+        <li>Locker room & showers</li>
+        <li>App tracking</li>
+      </ul>
+      <button class="btn-plan">Select Plan</button>
+    </div>
+
+    <div class="plan-card featured reveal reveal-delay-1">
+      <div class="plan-badge">Most Popular</div>
+      <div class="plan-label">Quarterly Access</div>
+      <div class="plan-price"><span class="plan-currency">$</span>129</div>
+      <span class="plan-period">per quarter — save 12%</span>
+      <ul class="plan-perks">
+        <li>Everything in Monthly</li>
+        <li>2 PT sessions/month</li>
+        <li>Nutrition consultation</li>
+        <li>Recovery lounge access</li>
+        <li>Priority class booking</li>
+      </ul>
+      <button class="btn-plan">Select Plan</button>
+    </div>
+
+    <div class="plan-card reveal reveal-delay-2">
+      <div class="plan-label">Annual Access</div>
+      <div class="plan-price"><span class="plan-currency">$</span>399</div>
+      <span class="plan-period">per year — save 32%</span>
+      <ul class="plan-perks">
+        <li>Everything in Quarterly</li>
+        <li>Unlimited PT sessions</li>
+        <li>Custom meal plans</li>
+        <li>Guest passes x12</li>
+        <li>VIP lounge access</li>
+        <li>Quarterly body analysis</li>
+      </ul>
+      <button class="btn-plan">Select Plan</button>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="reveal">
+    <div class="section-label">Member Stories</div>
+    <h2 class="section-title">REAL<br><em>RESULTS</em></h2>
+  </div>
+
+  <div class="testimonials-layout">
+    <div class="testimonials-left reveal">
+      <div class="testi-count">4.9</div>
+      <p style="font-family:var(--ff-cond);font-size:0.8rem;letter-spacing:0.15em;color:var(--text);text-transform:uppercase;margin-top:8px;">Average rating<br>from 3,000+ reviews</p>
+      <div class="testi-nav">
+        <button class="testi-dot active" onclick="filterTesti(0)"></button>
+        <button class="testi-dot" onclick="filterTesti(1)"></button>
+        <button class="testi-dot" onclick="filterTesti(2)"></button>
+      </div>
+    </div>
+
+    <div class="testimonials-right reveal reveal-delay-2" id="testiContainer">
+      <div class="testi-card">
+        <div class="testi-quote-icon">"</div>
+        <p class="testi-text">EliteFit completely transformed my approach to training. Lost 28kg in 8 months and gained more strength than I had in my 20s. The coaches here don't just know fitness — they know people.</p>
+        <div class="testi-author">
+          <div class="testi-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200" alt=""></div>
+          <div>
+            <div class="testi-name">Marcus Chen</div>
+            <div class="testi-role">Member since 2022</div>
+          </div>
+          <div class="testi-stars">★★★★★</div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-quote-icon">"</div>
+        <p class="testi-text">I've been to luxury gyms worldwide. EliteFit is in another league. The equipment, the space, the community — and the recovery lounge is genuinely unlike anything else.</p>
+        <div class="testi-author">
+          <div class="testi-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200" alt=""></div>
+          <div>
+            <div class="testi-name">Sarah Okonkwo</div>
+            <div class="testi-role">Member since 2021</div>
+          </div>
+          <div class="testi-stars">★★★★★</div>
+        </div>
+      </div>
+
+      <div class="testi-card">
+        <div class="testi-quote-icon">"</div>
+        <p class="testi-text">My PT here mapped out my entire year of training and nutrition. Competed in my first powerlifting meet 11 months in. The coaching depth here is genuinely elite-level.</p>
+        <div class="testi-author">
+          <div class="testi-avatar"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=200" alt=""></div>
+          <div>
+            <div class="testi-name">James Rivera</div>
+            <div class="testi-role">Member since 2023</div>
+          </div>
+          <div class="testi-stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band">
+  <div class="reveal">
+    <div class="section-label">Get Started</div>
+    <h2 class="section-title" style="color:var(--black);">YOUR FIRST<br>STEP STARTS<br>HERE.</h2>
+    <p>Reserve your free trial session. No commitment, no pressure — just results.</p>
+  </div>
+  <div class="cta-right reveal reveal-delay-2">
+    <div class="cta-input-group">
+      <input class="cta-input" type="email" placeholder="Enter your email address">
+      <button class="cta-submit">Book Free Trial</button>
+    </div>
+    <p class="cta-note">No credit card required — cancel anytime</p>
+    <div style="display:flex;gap:32px;margin-top:16px;">
+      <div>
+        <div style="font-family:var(--ff-display);font-size:2rem;color:var(--black);line-height:1;">12K+</div>
+        <div style="font-family:var(--ff-cond);font-size:0.7rem;letter-spacing:0.15em;color:rgba(0,0,0,0.5);text-transform:uppercase;">Active members</div>
+      </div>
+      <div>
+        <div style="font-family:var(--ff-display);font-size:2rem;color:var(--black);line-height:1;">98%</div>
+        <div style="font-family:var(--ff-cond);font-size:0.7rem;letter-spacing:0.15em;color:rgba(0,0,0,0.5);text-transform:uppercase;">Satisfaction rate</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="reveal">
+    <div class="section-label">Get in Touch</div>
+    <h2 class="section-title">CONTACT<br><em>US</em></h2>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <div class="contact-item">
+        <h4>Address</h4>
+        <p>142 Performance Blvd<br>New York, NY 10001</p>
+      </div>
+      <div class="contact-item">
+        <h4>Hours</h4>
+        <p>Mon–Fri: 5:00 AM – 11:00 PM<br>Sat–Sun: 6:00 AM – 10:00 PM</p>
+      </div>
+      <div class="contact-item">
+        <h4>Phone</h4>
+        <a href="tel:+12125550199">+1 (212) 555-0199</a>
+      </div>
+      <div class="contact-item">
+        <h4>Email</h4>
+        <a href="mailto:hello@elitefit.com">hello@elitefit.com</a>
+      </div>
+    </div>
+
+    <div class="contact-form reveal reveal-delay-2">
+      <div class="form-row">
+        <div class="form-field">
+          <label>First Name</label>
+          <input type="text" placeholder="John">
+        </div>
+        <div class="form-field">
+          <label>Last Name</label>
+          <input type="text" placeholder="Doe">
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Email Address</label>
+        <input type="email" placeholder="john@example.com">
+      </div>
+      <div class="form-field">
+        <label>Interest</label>
+        <select>
+          <option value="">Select a service</option>
+          <option>Membership Enquiry</option>
+          <option>Personal Training</option>
+          <option>Group Classes</option>
+          <option>Corporate Packages</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Message</label>
+        <textarea placeholder="Tell us about your goals..."></textarea>
+      </div>
+      <button class="btn-submit">Send Message →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo">ELITEFIT</span>
+      <p>Premium performance fitness. Built for the relentless, designed for results. New York's most elite training environment.</p>
+      <div class="social-row">
+        <a class="social-link" href="#">IG</a>
+        <a class="social-link" href="#">FB</a>
+        <a class="social-link" href="#">TW</a>
+        <a class="social-link" href="#">YT</a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h5>Company</h5>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Our Team</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#">Weight Training</a></li>
+        <li><a href="#">Personal Training</a></li>
+        <li><a href="#">CrossFit</a></li>
+        <li><a href="#">Nutrition</a></li>
+        <li><a href="#">Recovery</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Legal</h5>
+      <ul>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Use</a></li>
+        <li><a href="#">Refund Policy</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>© 2026 EliteFit Gym. All rights reserved.</span>
+    <span>Designed with precision.</span>
+  </div>
+</footer>
+
+<script>
+/* === CURSOR === */
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx=0, my=0, rx=0, ry=0;
+document.addEventListener('mousemove', e=>{
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+});
+function animateRing(){
+  rx += (mx-rx)*0.12;
+  ry += (my-ry)*0.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.querySelectorAll('a,button,.service-card,.plan-card,.testi-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-hover'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-hover'));
+});
+
+/* === LOADER === */
+const loaderEl = document.getElementById('loader');
+const loaderNum = document.getElementById('loaderNum');
+let prog = 0;
+const interval = setInterval(()=>{
+  prog += Math.random()*12 + 4;
+  if(prog>=100){ prog=100; clearInterval(interval); }
+  loaderNum.textContent = Math.floor(prog)+'%';
+}, 80);
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    loaderEl.classList.add('hide');
+    document.querySelectorAll('.reveal').forEach(el=>{
+      const top = el.getBoundingClientRect().top;
+      if(top < window.innerHeight*0.9) el.classList.add('active');
+    });
+  }, 1900);
+});
+
+/* === NAVBAR SCROLL === */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  navbar.classList.toggle('scrolled', window.scrollY>60);
+});
+
+/* === HAMBURGER === */
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click',()=>{
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+document.querySelectorAll('.mm-link').forEach(l=>{
+  l.addEventListener('click',()=>{
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  });
+});
+
+/* === SCROLL REVEAL === */
+const revealObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){ e.target.classList.add('active'); revealObserver.unobserve(e.target); }
+  });
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>revealObserver.observe(el));
+
+/* === TESTIMONIALS FILTER === */
+function filterTesti(idx){
+  document.querySelectorAll('.testi-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+}
+
+/* === LOADER PERCENTAGE COUNTER === */
+let countInterval = setInterval(()=>{
+  const current = parseInt(loaderNum.textContent);
+  if(current >= 100){ clearInterval(countInterval); return; }
+  loaderNum.textContent = Math.min(current + Math.floor(Math.random()*8+3), 100)+'%';
+},100);
+</script>
+</body>
+</html>

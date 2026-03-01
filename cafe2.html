@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ananta Roastery | Premium Kaapi Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS VARIABLES & THEME --- */
+        :root {
+            --primary-teal: #0A3641;
+            --bg-sand: #F9F6F0;
+            --accent-terracotta: #C85A32;
+            --accent-gold: #D4AF37;
+            --text-dark: #2C2C2C;
+            --text-light: #FFFFFF;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* --- RESET & TYPOGRAPHY --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-sand);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+        }
+
+        /* --- REUSABLE UTILITIES --- */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .section-padding {
+            padding: 6rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-teal);
+            margin-bottom: 3rem;
+        }
+
+        .section-title span {
+            color: var(--accent-terracotta);
+            font-style: italic;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 32px;
+            background: var(--accent-terracotta);
+            color: var(--text-light);
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            background: var(--primary-teal);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(10, 54, 65, 0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--text-light);
+        }
+
+        .btn-outline:hover {
+            background: var(--text-light);
+            color: var(--primary-teal);
+        }
+
+        /* --- ANIMATIONS --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- NAVBAR --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        nav.scrolled {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            padding: 1rem 5%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 2rem;
+            color: var(--text-light);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        nav.scrolled .logo, nav.scrolled .nav-links a {
+            color: var(--primary-teal);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+        .hamburger div {
+            width: 25px;
+            height: 2px;
+            background: var(--text-light);
+            margin: 5px;
+            transition: var(--transition);
+        }
+        nav.scrolled .hamburger div { background: var(--primary-teal); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(10, 54, 65, 0.6), rgba(10, 54, 65, 0.4)), url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?q=80&w=2000') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-content {
+            color: var(--text-light);
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translate(-50%, 0); }
+            40% { transform: translate(-50%, -15px); }
+            60% { transform: translate(-50%, -7px); }
+        }
+
+        /* --- ABOUT SECTION --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-image {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: var(--transition);
+        }
+        
+        .about-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            color: var(--primary-teal);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+
+        .about-highlights {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: var(--primary-teal);
+        }
+
+        .highlight-item::before {
+            content: '✦';
+            color: var(--accent-terracotta);
+        }
+
+        /* --- MENU SECTION --- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .menu-card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+
+        .menu-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .menu-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .menu-card:hover .menu-img img {
+            transform: scale(1.1);
+        }
+
+        .menu-info {
+            padding: 1.5rem;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-header h3 {
+            font-size: 1.2rem;
+            color: var(--primary-teal);
+        }
+
+        .price {
+            font-weight: 600;
+            color: var(--accent-terracotta);
+            font-size: 1.1rem;
+        }
+
+        .menu-info p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* --- OFFERS SECTION --- */
+        .offers {
+            background: var(--primary-teal);
+            color: var(--text-light);
+            text-align: center;
+            padding: 5rem 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .offers::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(200,90,50,0.2) 0%, transparent 70%);
+            z-index: 1;
+        }
+
+        .offers-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .offers h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--accent-gold);
+        }
+
+        .badge {
+            background: var(--accent-terracotta);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+
+        /* --- GALLERY SECTION --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 250px;
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+        .gallery-item:nth-child(4) { grid-column: span 2; }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* --- TESTIMONIALS --- */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .test-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+        }
+
+        .test-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            object-fit: cover;
+            border: 3px solid var(--accent-gold);
+        }
+
+        .stars { color: var(--accent-gold); margin-bottom: 1rem; }
+        .test-card p { font-style: italic; color: #555; margin-bottom: 1rem; }
+        .test-card h4 { color: var(--primary-teal); }
+
+        /* --- RESERVATION --- */
+        .reservation {
+            background: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=2000') center/cover fixed;
+            padding: 6rem 5%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .res-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            padding: 3rem;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .res-card h2 {
+            color: var(--primary-teal);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group { width: 100%; }
+        .form-group.full { grid-column: span 2; }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid rgba(10, 54, 65, 0.2);
+            border-radius: 6px;
+            background: rgba(255,255,255,0.6);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-terracotta);
+            background: #fff;
+        }
+
+        /* --- LOCATION & FOOTER --- */
+        .location-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 400px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-style: italic;
+        }
+
+        .hours-box {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+
+        .hours-box h3 {
+            color: var(--primary-teal);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .hours-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        footer {
+            background: var(--primary-teal);
+            color: rgba(255,255,255,0.7);
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-grid h4 {
+            color: var(--text-light);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links { list-style: none; }
+        .footer-links li { margin-bottom: 0.8rem; }
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .footer-links a:hover { color: var(--accent-gold); }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.85rem;
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 992px) {
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .gallery-item:nth-child(1), .gallery-item:nth-child(4) { grid-column: span 1; grid-row: span 1; }
+            .about-grid, .location-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 100%; right: 0; width: 100%;
+                background: var(--primary-teal);
+                flex-direction: column;
+                align-items: center;
+                padding: 2rem 0;
+                transform: translateY(-150%);
+                z-index: -1;
+                opacity: 0;
+                transition: var(--transition);
+            }
+            .nav-links.nav-active {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            .nav-links a { color: var(--text-light); }
+            .hamburger { display: block; }
+            
+            .hero h1 { font-size: 2.8rem; }
+            .hero-buttons { flex-direction: column; }
+            
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full { grid-column: span 1; }
+        }
+
+        @media (max-width: 480px) {
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .section-title { font-size: 2rem; }
+            .res-card { padding: 2rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <a href="#" class="logo">Ananta.</a>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">Story</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#gallery">Experience</a></li>
+            <li><a href="#reservation">Reserve</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <div class="line1"></div>
+            <div class="line2"></div>
+            <div class="line3"></div>
+        </div>
+    </nav>
+
+    <header class="hero" id="home">
+        <div class="hero-content reveal">
+            <h1>The Eternal Kaapi Experience</h1>
+            <p>Discover the finest shade-grown beans from the estates of Chikmagalur, artfully roasted and beautifully brewed.</p>
+            <div class="hero-buttons">
+                <a href="#menu" class="btn">Explore Menu</a>
+                <a href="#reservation" class="btn btn-outline">Reserve a Table</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">SCROLL DOWN<br>↓</div>
+    </header>
+
+    <section class="section-padding" id="about">
+        <div class="container about-grid">
+            <div class="about-image reveal">
+                <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=800" alt="Barista pouring coffee">
+            </div>
+            <div class="about-text reveal">
+                <h2>A Legacy of <span>Flavor</span></h2>
+                <p>At Ananta Roastery, we believe that every cup tells a story. Sourced directly from high-altitude Indian estates, our beans are carefully handpicked and artisanally roasted to bring out complex, native flavor profiles.</p>
+                <p>Step into our warm, architecturally curated space where modern luxury meets traditional hospitality. Whether you're here for a quick espresso or a long afternoon with a book, you belong here.</p>
+                <div class="about-highlights">
+                    <div class="highlight-item">Estate-Sourced Beans</div>
+                    <div class="highlight-item">Artisanal Roasting</div>
+                    <div class="highlight-item">Master Baristas</div>
+                    <div class="highlight-item">Ambient Atmosphere</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" style="background: #fff;" id="menu">
+        <div class="container">
+            <h2 class="section-title reveal">Our <span>Curated</span> Menu</h2>
+            <div class="menu-grid">
+                <div class="menu-card reveal">
+                    <div class="menu-img"><img src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?q=80&w=500" alt="Cold Brew"></div>
+                    <div class="menu-info">
+                        <div class="menu-header">
+                            <h3>Malabar Cold Brew</h3>
+                            <span class="price">₹350</span>
+                        </div>
+                        <p>18-hour steeped Monsooned Malabar, served over crafted ice.</p>
+                    </div>
+                </div>
+                <div class="menu-card reveal">
+                    <div class="menu-img"><img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=500" alt="Latte Art"></div>
+                    <div class="menu-info">
+                        <div class="menu-header">
+                            <h3>Cardamom Spiced Latte</h3>
+                            <span class="price">₹280</span>
+                        </div>
+                        <p>Velvety espresso with steamed milk and a hint of green cardamom.</p>
+                    </div>
+                </div>
+                <div class="menu-card reveal">
+                    <div class="menu-img"><img src="https://images.unsplash.com/photo-1495474472207-464a8d410db6?q=80&w=500" alt="Breakfast"></div>
+                    <div class="menu-info">
+                        <div class="menu-header">
+                            <h3>Avocado & Podi Toast</h3>
+                            <span class="price">₹420</span>
+                        </div>
+                        <p>Sourdough topped with smashed avocado and traditional gunpowder spice.</p>
+                    </div>
+                </div>
+                <div class="menu-card reveal">
+                    <div class="menu-img"><img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?q=80&w=500" alt="Dessert"></div>
+                    <div class="menu-info">
+                        <div class="menu-header">
+                            <h3>Saffron Pistachio Cake</h3>
+                            <span class="price">₹320</span>
+                        </div>
+                        <p>Decadent sponge cake infused with saffron, topped with crushed pistachios.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="offers">
+        <div class="offers-content reveal">
+            <div class="badge">Weekend Exclusive</div>
+            <h2>The Ananta Tasting Flight</h2>
+            <p style="margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">Experience three distinct roasts paired with complimentary artisanal truffles. Available every Saturday and Sunday.</p>
+            <a href="#reservation" class="btn btn-outline">Book Your Flight</a>
+        </div>
+    </section>
+
+    <section class="section-padding" id="gallery">
+        <div class="container">
+            <h2 class="section-title reveal">The <span>Experience</span></h2>
+            <div class="gallery-grid">
+                <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=800" alt="Cafe Interior"></div>
+                <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?q=80&w=500" alt="Coffee beans"></div>
+                <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1495474472207-464a8d410db6?q=80&w=500" alt="Food"></div>
+                <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?q=80&w=800" alt="Pour over"></div>
+                <div class="gallery-item reveal"><img src="https://images.unsplash.com/photo-1507133750076-ba771a0b36e0?q=80&w=500" alt="Details"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" style="background: #fff;">
+        <div class="container">
+            <h2 class="section-title reveal">Guest <span>Stories</span></h2>
+            <div class="testimonials-grid">
+                <div class="test-card reveal">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200" alt="Customer" class="test-img">
+                    <div class="stars">★★★★★</div>
+                    <p>"The Monsooned Malabar cold brew is simply unmatched. The ambiance is perfect for my weekend reading."</p>
+                    <h4>Priya M.</h4>
+                </div>
+                <div class="test-card reveal">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200" alt="Customer" class="test-img">
+                    <div class="stars">★★★★★</div>
+                    <p>"Ananta has brought a new level of coffee culture to the city. The staff is highly knowledgeable and welcoming."</p>
+                    <h4>Rahul K.</h4>
+                </div>
+                <div class="test-card reveal">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200" alt="Customer" class="test-img">
+                    <div class="stars">★★★★★</div>
+                    <p>"The Cardamom Spiced Latte paired with their Saffron Cake is a heavenly combination. Absolute luxury!"</p>
+                    <h4>Anita S.</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="reservation" id="reservation">
+        <div class="res-card reveal">
+            <h2>Reserve a Table</h2>
+            <form id="bookingForm">
+                <div class="form-grid">
+                    <div class="form-group"><input type="text" placeholder="Your Name" required></div>
+                    <div class="form-group"><input type="tel" placeholder="Phone Number" required></div>
+                    <div class="form-group">
+                        <select required>
+                            <option value="" disabled selected>Number of Guests</option>
+                            <option value="1">1 Person</option>
+                            <option value="2">2 People</option>
+                            <option value="3">3 People</option>
+                            <option value="4">4+ People</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><input type="date" required></div>
+                    <div class="form-group full"><input type="time" required></div>
+                    <div class="form-group full">
+                        <button type="submit" class="btn" style="width: 100%;">Confirm Reservation</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="section-padding" id="location">
+        <div class="container location-grid">
+            <div class="reveal">
+                <div class="map-placeholder">
+                    [ Interactive Map Placeholder ]<br>123 Heritage Lane, Arts District
+                </div>
+            </div>
+            <div class="hours-box reveal">
+                <h3>Visit Us</h3>
+                <p style="margin-bottom: 2rem; color: #666;">Located in the heart of the heritage district, providing a tranquil escape from the city.</p>
+                
+                <div class="hours-row"><span>Monday - Friday</span> <span>07:00 AM - 10:00 PM</span></div>
+                <div class="hours-row"><span>Saturday - Sunday</span> <span>08:00 AM - 11:00 PM</span></div>
+                
+                <div style="margin-top: 2rem;">
+                    <p><strong>Phone:</strong> +91 98765 43210</p>
+                    <p><strong>Email:</strong> hello@anantaroastery.in</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h2 class="logo" style="margin-bottom: 1rem;">Ananta.</h2>
+                    <p>Elevating the Indian coffee experience through ethical sourcing, precise roasting, and artistic brewing.</p>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">Our Story</a></li>
+                        <li><a href="#menu">Menu</a></li>
+                        <li><a href="#reservation">Reservations</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Follow Us</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Twitter</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2026 Ananta Roastery. Designed for Premium Experiences. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 1. Sticky Navbar Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 2. Mobile Hamburger Menu
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('nav-active');
+        });
+
+        // Close menu when a link is clicked
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('nav-active');
+            });
+        });
+
+        // 3. Scroll Reveal Animation via Intersection Observer
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Trigger only once
+                }
+            });
+        }, {
+            root: null,
+            threshold: 0.15, // Trigger when 15% of the element is visible
+            rootMargin: "0px 0px -50px 0px"
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // 4. Form Submission Mockup
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you! Your reservation at Ananta Roastery has been requested. We will contact you shortly to confirm.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shakti Fitness Arena | Premium Strength & Conditioning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS VARIABLES & THEME --- */
+        :root {
+            --bg-black: #0a0a0a;
+            --bg-dark-grey: #141414;
+            --bg-card: #1f1f1f;
+            --neon-orange: #FF5E14;
+            --neon-glow: 0 0 20px rgba(255, 94, 20, 0.6);
+            --text-white: #ffffff;
+            --text-grey: #a0a0a0;
+            --font-head: 'Oswald', sans-serif;
+            --font-body: 'Poppins', sans-serif;
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* --- RESET & BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: var(--font-body); background-color: var(--bg-black); color: var(--text-white); overflow-x: hidden; line-height: 1.6; }
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-head); text-transform: uppercase; letter-spacing: 1px; }
+        img { width: 100%; display: block; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- UTILITIES --- */
+        .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 5%; }
+        .section-pad { padding: 100px 0; }
+        .bg-dark { background-color: var(--bg-dark-grey); }
+        .text-orange { color: var(--neon-orange); }
+        
+        .section-title { text-align: center; font-size: 3rem; margin-bottom: 1rem; }
+        .section-subtitle { text-align: center; color: var(--text-grey); max-width: 600px; margin: 0 auto 4rem auto; font-size: 1rem; }
+
+        /* Buttons */
+        .btn { display: inline-block; padding: 14px 35px; font-family: var(--font-head); font-size: 1.1rem; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border: 2px solid transparent; transition: var(--transition); position: relative; overflow: hidden; z-index: 1; }
+        .btn-primary { background: var(--neon-orange); color: var(--bg-black); }
+        .btn-primary:hover { background: transparent; border-color: var(--neon-orange); color: var(--neon-orange); box-shadow: var(--neon-glow); }
+        .btn-outline { background: transparent; border-color: var(--text-white); color: var(--text-white); }
+        .btn-outline:hover { background: var(--text-white); color: var(--bg-black); }
+
+        /* Animations */
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- NAVBAR --- */
+        nav { position: fixed; top: 0; width: 100%; padding: 20px 5%; z-index: 1000; display: flex; justify-content: space-between; align-items: center; transition: var(--transition); }
+        nav.scrolled { background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); padding: 15px 5%; box-shadow: 0 5px 20px rgba(0,0,0,0.5); border-bottom: 1px solid rgba(255, 94, 20, 0.2); }
+        .logo { font-family: var(--font-head); font-size: 2rem; font-weight: 700; color: var(--text-white); }
+        .logo span { color: var(--neon-orange); }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-family: var(--font-head); font-size: 1.1rem; transition: var(--transition); }
+        .nav-links a:hover { color: var(--neon-orange); text-shadow: var(--neon-glow); }
+        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 5px; }
+        .hamburger span { width: 30px; height: 3px; background: var(--text-white); transition: var(--transition); }
+
+        /* --- HERO SECTION --- */
+        .hero { height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; text-align: center; background: linear-gradient(to right, rgba(10,10,10,0.9), rgba(10,10,10,0.4)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=2070') center/cover no-repeat; background-attachment: fixed; }
+        .hero-content { max-width: 900px; padding: 0 20px; z-index: 2; }
+        .hero h1 { font-size: clamp(3.5rem, 8vw, 6rem); line-height: 1.1; margin-bottom: 20px; text-shadow: 2px 4px 10px rgba(0,0,0,0.5); }
+        .hero p { font-size: clamp(1rem, 2vw, 1.2rem); color: #ddd; margin-bottom: 40px; font-weight: 300; }
+        .hero-btns { display: flex; justify-content: center; gap: 20px; }
+        .scroll-down { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); animation: bounce 2s infinite; color: var(--text-grey); font-family: var(--font-head); letter-spacing: 2px; }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); } 40% { transform: translateY(-15px) translateX(-50%); } 60% { transform: translateY(-7px) translateX(-50%); } }
+
+        /* --- ABOUT SECTION --- */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .about-img { position: relative; border-radius: 10px; overflow: hidden; box-shadow: var(--neon-glow); }
+        .about-img img { transition: var(--transition); }
+        .about-img:hover img { transform: scale(1.05); }
+        .about-text h2 { font-size: 3rem; margin-bottom: 20px; }
+        .about-text p { color: var(--text-grey); margin-bottom: 30px; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .stat-box { background: var(--bg-card); padding: 20px; border-left: 3px solid var(--neon-orange); border-radius: 5px; }
+        .stat-num { font-family: var(--font-head); font-size: 2.5rem; color: var(--neon-orange); line-height: 1; }
+        .stat-label { font-size: 0.9rem; color: var(--text-grey); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* --- PROGRAMS SECTION --- */
+        .programs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .program-card { background: var(--bg-card); border-radius: 10px; overflow: hidden; position: relative; cursor: pointer; transition: var(--transition); }
+        .program-card img { height: 250px; object-fit: cover; opacity: 0.7; transition: var(--transition); }
+        .program-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.9)); transform: translateY(20px); transition: var(--transition); }
+        .program-info h3 { font-size: 1.5rem; margin-bottom: 5px; color: var(--neon-orange); }
+        .program-info p { font-size: 0.9rem; color: var(--text-grey); opacity: 0; transition: var(--transition); }
+        .program-card:hover { transform: translateY(-10px); box-shadow: var(--neon-glow); }
+        .program-card:hover img { opacity: 1; transform: scale(1.1); }
+        .program-card:hover .program-info { transform: translateY(0); }
+        .program-card:hover .program-info p { opacity: 1; }
+
+        /* --- FACILITIES (ICONS) --- */
+        .facilities-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; text-align: center; }
+        .facility-item { background: var(--bg-card); padding: 40px 20px; border-radius: 10px; transition: var(--transition); border: 1px solid rgba(255,255,255,0.05); }
+        .facility-icon { font-size: 3rem; color: var(--neon-orange); margin-bottom: 15px; transition: var(--transition); }
+        .facility-item:hover { transform: translateY(-5px); border-color: var(--neon-orange); box-shadow: var(--neon-glow); }
+        .facility-item:hover .facility-icon { text-shadow: var(--neon-glow); }
+
+        /* --- MEMBERSHIPS SECTION --- */
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; align-items: center; }
+        .price-card { background: var(--bg-card); padding: 40px; border-radius: 15px; text-align: center; transition: var(--transition); border: 1px solid rgba(255,255,255,0.1); position: relative; overflow: hidden; }
+        .price-card.featured { background: linear-gradient(145deg, var(--bg-card), #2a1005); border-color: var(--neon-orange); transform: scale(1.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .price-card:hover { transform: translateY(-10px); border-color: var(--neon-orange); box-shadow: var(--neon-glow); }
+        .price-card.featured:hover { transform: scale(1.05) translateY(-10px); }
+        .plan-name { font-size: 1.5rem; margin-bottom: 15px; color: var(--neon-orange); }
+        .plan-price { font-family: var(--font-head); font-size: 3rem; margin-bottom: 20px; }
+        .plan-price span { font-size: 1rem; color: var(--text-grey); font-family: var(--font-body); }
+        .plan-features { margin-bottom: 30px; }
+        .plan-features li { margin-bottom: 15px; color: #ddd; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
+
+        /* --- GALLERY SECTION --- */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); grid-auto-rows: 250px; gap: 15px; }
+        .gallery-item { overflow: hidden; border-radius: 8px; position: relative; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; filter: grayscale(50%); }
+        .gallery-item:hover img { transform: scale(1.1); filter: grayscale(0%); }
+
+        /* --- TRAINERS SECTION --- */
+        .trainers-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .trainer-card { background: var(--bg-card); border-radius: 10px; overflow: hidden; text-align: center; padding-bottom: 20px; transition: var(--transition); }
+        .trainer-img { height: 350px; overflow: hidden; }
+        .trainer-img img { height: 100%; object-fit: cover; transition: var(--transition); }
+        .trainer-info { padding: 20px; }
+        .trainer-name { font-size: 1.5rem; color: var(--neon-orange); margin-bottom: 5px; }
+        .trainer-spec { color: var(--text-grey); font-size: 0.9rem; margin-bottom: 15px; }
+        .trainer-card:hover { transform: translateY(-10px); box-shadow: var(--neon-glow); }
+        .trainer-card:hover .trainer-img img { transform: scale(1.05); }
+
+        /* --- TESTIMONIALS --- */
+        .test-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .test-card { background: var(--bg-card); padding: 30px; border-radius: 10px; position: relative; }
+        .test-card::before { content: '"'; position: absolute; top: 10px; right: 20px; font-size: 4rem; color: rgba(255, 94, 20, 0.2); font-family: serif; }
+        .test-text { font-style: italic; color: #ddd; margin-bottom: 20px; }
+        .test-user { display: flex; align-items: center; gap: 15px; }
+        .test-user img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--neon-orange); }
+        .stars { color: var(--neon-orange); font-size: 0.9rem; }
+
+        /* --- CTA BANNER --- */
+        .cta-section { background: linear-gradient(rgba(255, 94, 20, 0.9), rgba(200, 50, 0, 0.9)), url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070') center/cover fixed; text-align: center; padding: 100px 5%; }
+        .cta-section h2 { font-size: 3.5rem; color: var(--text-white); margin-bottom: 20px; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        .cta-section .btn-primary { background: var(--bg-black); color: var(--text-white); }
+        .cta-section .btn-primary:hover { background: var(--text-white); color: var(--bg-black); box-shadow: 0 0 20px rgba(255,255,255,0.5); }
+
+        /* --- CONTACT SECTION --- */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+        .contact-info { background: var(--bg-card); padding: 40px; border-radius: 10px; border-top: 4px solid var(--neon-orange); }
+        .contact-info h3 { font-size: 2rem; margin-bottom: 20px; }
+        .info-item { margin-bottom: 20px; }
+        .info-item h4 { color: var(--neon-orange); font-size: 1.1rem; margin-bottom: 5px; }
+        .info-item p { color: var(--text-grey); }
+        .map-container { border-radius: 10px; overflow: hidden; min-height: 400px; background: #222; display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.1); }
+        
+        .contact-form input, .contact-form textarea { width: 100%; padding: 15px; margin-bottom: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-white); border-radius: 5px; font-family: var(--font-body); transition: var(--transition); }
+        .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--neon-orange); background: rgba(0,0,0,0.5); }
+
+        /* --- FOOTER --- */
+        footer { background: #050505; padding: 80px 5% 30px; border-top: 1px solid rgba(255, 94, 20, 0.2); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 50px; }
+        .footer-col h4 { font-size: 1.2rem; margin-bottom: 20px; color: var(--text-white); }
+        .footer-col p { color: var(--text-grey); margin-bottom: 20px; font-size: 0.9rem; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: var(--text-grey); transition: var(--transition); font-size: 0.9rem; }
+        .footer-links a:hover { color: var(--neon-orange); padding-left: 5px; }
+        .footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); color: var(--text-grey); font-size: 0.8rem; }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 1024px) {
+            .about-grid, .contact-grid { grid-template-columns: 1fr; }
+            .price-card.featured { transform: scale(1); }
+            .price-card.featured:hover { transform: translateY(-10px); }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { position: absolute; top: 100%; left: 0; width: 100%; background: rgba(10,10,10,0.98); flex-direction: column; padding: 20px 0; align-items: center; transform: translateY(-150%); opacity: 0; transition: var(--transition); z-index: -1; }
+            .nav-links.active { transform: translateY(0); opacity: 1; border-bottom: 1px solid var(--neon-orange); }
+            .hamburger { display: flex; }
+            .hero h1 { font-size: 3rem; }
+            .hero-btns { flex-direction: column; padding: 0 20px; }
+            .section-title { font-size: 2.5rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .footer-links a:hover { padding-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <a href="#" class="logo">SHAKTI <span>FITNESS</span></a>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#programs">Programs</a></li>
+            <li><a href="#memberships">Memberships</a></li>
+            <li><a href="#trainers">Trainers</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <header class="hero" id="home">
+        <div class="hero-content reveal">
+            <h1>Transform Your Body.<br><span class="text-orange">Build Your Strength.</span></h1>
+            <p>Premium fitness training, world-class equipment, and expert trainers in India's most elite strength arena.</p>
+            <div class="hero-btns">
+                <a href="#memberships" class="btn btn-primary">Join Now</a>
+                <a href="#programs" class="btn btn-outline">Explore Programs</a>
+            </div>
+        </div>
+        <div class="scroll-down">SCROLL ↓</div>
+    </header>
+
+    <section class="section-pad bg-dark" id="about">
+        <div class="container about-grid">
+            <div class="about-img reveal">
+                <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=1000" alt="Gym Interior">
+            </div>
+            <div class="about-text reveal">
+                <h2 class="text-orange">The Iron Temple</h2>
+                <p>Shakti Fitness Arena isn't just a gym; it's a forging ground. Equipped with cutting-edge bio-mechanic machines, vast free-weight zones, and an atmosphere that breeds success, we provide the ultimate environment for serious transformations.</p>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-num" data-target="2500">0</div>
+                        <div class="stat-label">Active Members</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-num" data-target="45">0</div>
+                        <div class="stat-label">Elite Trainers</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-num" data-target="150">0</div>
+                        <div class="stat-label">Premium Machines</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-num" data-target="12">0</div>
+                        <div class="stat-label">Years of Excellence</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-pad" id="programs">
+        <div class="container">
+            <h2 class="section-title reveal">Training <span class="text-orange">Programs</span></h2>
+            <p class="section-subtitle reveal">Designed for every fitness level, our targeted programs guarantee maximum results in minimum time.</p>
+            
+            <div class="programs-grid">
+                <div class="program-card reveal">
+                    <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800" alt="Strength">
+                    <div class="program-info">
+                        <h3>Powerlifting & Strength</h3>
+                        <p>Master the big lifts with expert coaching and specialized competition equipment.</p>
+                    </div>
+                </div>
+                <div class="program-card reveal">
+                    <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800" alt="CrossFit">
+                    <div class="program-info">
+                        <h3>HIIT & CrossFit</h3>
+                        <p>High-intensity functional training designed to shred fat and build endurance.</p>
+                    </div>
+                </div>
+                <div class="program-card reveal">
+                    <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=800" alt="Personal Training">
+                    <div class="program-info">
+                        <h3>1-on-1 Personal Training</h3>
+                        <p>Customized workout and nutrition plans tailored exactly to your body type.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-pad bg-dark" id="facilities">
+        <div class="container">
+            <h2 class="section-title reveal">World-Class <span class="text-orange">Facilities</span></h2>
+            <div class="facilities-grid reveal">
+                <div class="facility-item">
+                    <div class="facility-icon">🏋️‍♂️</div>
+                    <h4>Free Weights Zone</h4>
+                </div>
+                <div class="facility-item">
+                    <div class="facility-icon">🏃‍♂️</div>
+                    <h4>Cardio Deck</h4>
+                </div>
+                <div class="facility-item">
+                    <div class="facility-icon">🥊</div>
+                    <h4>Combat Arena</h4>
+                </div>
+                <div class="facility-item">
+                    <div class="facility-icon">🥤</div>
+                    <h4>Protein Bar</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-pad" id="memberships">
+        <div class="container">
+            <h2 class="section-title reveal">Premium <span class="text-orange">Plans</span></h2>
+            <p class="section-subtitle reveal">Choose the tier that fits your dedication. No hidden fees. Pure performance.</p>
+            
+            <div class="pricing-grid">
+                <div class="price-card reveal">
+                    <h3 class="plan-name">Iron Tier</h3>
+                    <div class="plan-price">₹1,999<span>/mo</span></div>
+                    <ul class="plan-features">
+                        <li>Full Gym Access</li>
+                        <li>Standard Locker Access</li>
+                        <li>Cardio & Weight Zones</li>
+                        <li>1 Group Class / Week</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-outline">Select Plan</a>
+                </div>
+                <div class="price-card featured reveal">
+                    <div style="position:absolute; top:20px; right:-35px; background:var(--neon-orange); color:#000; padding:5px 40px; transform:rotate(45deg); font-family:var(--font-head); font-size:0.8rem;">POPULAR</div>
+                    <h3 class="plan-name" style="color:#fff;">Titan Tier</h3>
+                    <div class="plan-price text-orange">₹3,499<span style="color:#aaa;">/mo</span></div>
+                    <ul class="plan-features">
+                        <li>24/7 VIP Gym Access</li>
+                        <li>Premium Locker & Towel</li>
+                        <li>Nutrition Consultation</li>
+                        <li>Unlimited Group Classes</li>
+                        <li>1 PT Session / Month</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">Select Plan</a>
+                </div>
+                <div class="price-card reveal">
+                    <h3 class="plan-name">Beast Tier</h3>
+                    <div class="plan-price">₹7,999<span>/mo</span></div>
+                    <ul class="plan-features">
+                        <li>All Titan Features</li>
+                        <li>Dedicated Personal Trainer</li>
+                        <li>Custom Diet Planning</li>
+                        <li>Recovery Lounge Access</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-outline">Select Plan</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-pad bg-dark" id="gallery">
+        <div class="container">
+            <h2 class="section-title reveal">The <span class="text-orange">Arena</span></h2>
+            <div class="gallery-grid reveal">
+                <div class="gallery-item" style="grid-column: span 2; grid-row: span 2;"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800" alt="Gym"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=500" alt="Gym"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=500" alt="Gym"></div>
+                <div class="gallery-item" style="grid-column: span 2;"><img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800" alt="Gym"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-pad" id="trainers">
+        <div class="container">
+            <h2 class="section-title reveal">Master <span class="text-orange">Trainers</span></h2>
+            <div class="trainers-grid">
+                <div class="trainer-card reveal">
+                    <div class="trainer-img"><img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?q=80&w=500" alt="Trainer"></div>
+                    <div class="trainer-info">
+                        <h3 class="trainer-name">Vikram Singh</h3>
+                        <p class="trainer-spec">Head Strength Coach • 10 Yrs Exp</p>
+                    </div>
+                </div>
+                <div class="trainer-card reveal">
+                    <div class="trainer-img"><img src="https://images.unsplash.com/photo-1611672585731-fa10603fb9e0?q=80&w=500" alt="Trainer"></div>
+                    <div class="trainer-info">
+                        <h3 class="trainer-name">Aisha Sharma</h3>
+                        <p class="trainer-spec">CrossFit Expert • 7 Yrs Exp</p>
+                    </div>
+                </div>
+                <div class="trainer-card reveal">
+                    <div class="trainer-img"><img src="https://images.unsplash.com/photo-1534644107580-3a4dbd494a95?q=80&w=500" alt="Trainer"></div>
+                    <div class="trainer-info">
+                        <h3 class="trainer-name">Arjun Patel</h3>
+                        <p class="trainer-spec">Hypertrophy Specialist • 8 Yrs Exp</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section reveal">
+        <h2>Unleash Your True Potential</h2>
+        <p style="color:#fff; font-size:1.2rem; margin-bottom: 30px; font-weight:300;">Book a free 1-day VIP pass and experience the arena.</p>
+        <div style="display:flex; justify-content:center; gap:20px;">
+            <a href="#contact" class="btn btn-primary">Book Free Trial</a>
+        </div>
+    </section>
+
+    <section class="section-pad bg-dark" id="contact">
+        <div class="container contact-grid">
+            <div class="map-container reveal">
+                <div style="text-align:center; color:#666; font-family:var(--font-head); letter-spacing:2px;">
+                    <span style="font-size:3rem;">📍</span><br>
+                    INTERACTIVE GOOGLE MAP<br>
+                    SHAKTI FITNESS ARENA, MUMBAI
+                </div>
+            </div>
+            <div class="contact-info reveal">
+                <h3 class="text-orange">Get In Touch</h3>
+                <div class="info-item">
+                    <h4>Location</h4>
+                    <p>Level 4, Infinity Mall Complex, Andheri West, Mumbai, MH 400053</p>
+                </div>
+                <div class="info-item">
+                    <h4>Contact</h4>
+                    <p>+91 98765 43210<br>join@shaktifitness.in</p>
+                </div>
+                <div class="info-item">
+                    <h4>Arena Hours</h4>
+                    <p>Mon-Sat: 5:00 AM - 11:00 PM<br>Sunday: 6:00 AM - 8:00 PM</p>
+                </div>
+                
+                <form class="contact-form" onsubmit="event.preventDefault(); alert('Message sent! Welcome to the Arena.');">
+                    <input type="text" placeholder="Full Name" required>
+                    <input type="tel" placeholder="Phone Number" required>
+                    <button type="submit" class="btn btn-primary" style="width:100%;">Request Call Back</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="logo" style="display:inline-block; margin-bottom:15px;">SHAKTI <span>FITNESS</span></a>
+                    <p>India's premier strength and conditioning facility. We build athletes, we build discipline, we build power.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#programs">Programs</a></li>
+                        <li><a href="#gallery">Gallery</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Memberships</h4>
+                    <ul class="footer-links">
+                        <li><a href="#memberships">Iron Tier</a></li>
+                        <li><a href="#memberships">Titan Tier</a></li>
+                        <li><a href="#memberships">Beast Tier</a></li>
+                        <li><a href="#memberships">Corporate Plans</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Socials</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Instagram</a></li>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">YouTube</a></li>
+                        <li><a href="#">Twitter (X)</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 Shakti Fitness Arena. Forged in India. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sticky Navbar & Active Link Styling
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile Hamburger Menu
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            // Animate hamburger lines
+            const spans = hamburger.querySelectorAll('span');
+            spans[0].style.transform = navLinks.classList.contains('active') ? 'rotate(45deg) translate(5px, 5px)' : 'none';
+            spans[1].style.opacity = navLinks.classList.contains('active') ? '0' : '1';
+            spans[2].style.transform = navLinks.classList.contains('active') ? 'rotate(-45deg) translate(7px, -6px)' : 'none';
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                const spans = hamburger.querySelectorAll('span');
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            });
+        });
+
+        // Scroll Reveal Animation via Intersection Observer
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    
+                    // Trigger counter animation if it's the about section
+                    if(entry.target.classList.contains('about-text')) {
+                        runCounters();
+                    }
+                    
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: "0px 0px -50px 0px" });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // Animated Number Counters
+        let countersRan = false;
+        function runCounters() {
+            if(countersRan) return;
+            countersRan = true;
+            
+            const counters = document.querySelectorAll('.stat-num');
+            counters.forEach(counter => {
+                counter.innerText = '0';
+                const updateCounter = () => {
+                    const target = +counter.getAttribute('data-target');
+                    const c = +counter.innerText;
+                    const increment = target / 50; // Speed adjustment
+                    
+                    if (c < target) {
+                        counter.innerText = Math.ceil(c + increment);
+                        setTimeout(updateCounter, 30);
+                    } else {
+                        counter.innerText = target + (target > 50 ? '+' : '');
+                    }
+                };
+                updateCounter();
+            });
+        }
+    </script>
+</body>
+</html>
