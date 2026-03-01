@@ -1,22 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Website Demo Collection</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f172a,#1e293b);
+color:white;
+min-height:100vh;
+padding:40px 20px;
+}
+
+/* Header */
+
+.header{
+text-align:center;
+margin-bottom:50px;
+}
+
+.header h1{
+font-size:38px;
+font-weight:700;
+margin-bottom:10px;
+}
+
+.header p{
+color:#94a3b8;
+font-size:16px;
+}
+
+/* Category Section */
+
+.category{
+margin-bottom:50px;
+}
+
+.category-title{
+font-size:24px;
+margin-bottom:20px;
+font-weight:600;
+border-left:4px solid #38bdf8;
+padding-left:10px;
+}
+
+/* Grid */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+/* Card */
+
+.card{
+background:rgba(255,255,255,0.05);
+border-radius:14px;
+padding:30px;
+text-align:center;
+text-decoration:none;
+color:white;
+transition:0.35s;
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.08);
+}
+
+.card:hover{
+transform:translateY(-8px) scale(1.03);
+background:rgba(255,255,255,0.1);
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.card h3{
+font-size:18px;
+margin-bottom:5px;
+}
+
+.card span{
+font-size:13px;
+color:#94a3b8;
+}
+
+/* Footer */
+
+.footer{
+text-align:center;
+margin-top:60px;
+color:#64748b;
+font-size:14px;
+}
+
+</style>
+
 </head>
 <body>
-    <a href="cafe.html">cafe</a>
-    <a href="cafe1.html">cafe1</a>
-    <a href="cafe2.html">cafe2</a>
-    <a href="gym.html">cafe</a>
-    <a href="gym1.html">cafe</a>
-    <a href="gym2.html">cafe</a>
-    <a href="hotel.html">cafe</a>
-    <a href="hotel1.html">cafe</a>
-    <a href="hotel2.html">cafe</a>
-    <a href="salon.html">cafe</a>
-    <a href="salon1.html">cafe</a>
-    <a href="salon2.html">cafe</a>
+
+
+<div class="header">
+<h1>Website Demo Collection</h1>
+<p>Modern Demo Websites for Client Showcase</p>
+</div>
+
+
+<!-- Cafe -->
+
+<div class="category">
+
+<div class="category-title">☕ Cafe Websites</div>
+
+<div class="grid">
+
+<a href="cafe.html" class="card">
+<h3>Cafe Layout 1</h3>
+<span>Modern Coffee Website</span>
+</a>
+
+<a href="cafe1.html" class="card">
+<h3>Cafe Layout 2</h3>
+<span>Premium Cafe UI</span>
+</a>
+
+<a href="cafe2.html" class="card">
+<h3>Cafe Layout 3</h3>
+<span>Creative Coffee Design</span>
+</a>
+
+</div>
+
+</div>
+
+
+<!-- Gym -->
+
+<div class="category">
+
+<div class="category-title">💪 Gym Websites</div>
+
+<div class="grid">
+
+<a href="gym.html" class="card">
+<h3>Gym Layout 1</h3>
+<span>Fitness Website</span>
+</a>
+
+<a href="gym1.html" class="card">
+<h3>Gym Layout 2</h3>
+<span>Modern Gym UI</span>
+</a>
+
+<a href="gym2.html" class="card">
+<h3>Gym Layout 3</h3>
+<span>Premium Fitness Design</span>
+</a>
+
+</div>
+
+</div>
+
+
+<!-- Hotel -->
+
+<div class="category">
+
+<div class="category-title">🏨 Hotel Websites</div>
+
+<div class="grid">
+
+<a href="hotel.html" class="card">
+<h3>Hotel Layout 1</h3>
+<span>Luxury Hotel UI</span>
+</a>
+
+<a href="hotel1.html" class="card">
+<h3>Hotel Layout 2</h3>
+<span>Modern Resort Design</span>
+</a>
+
+<a href="hotel2.html" class="card">
+<h3>Hotel Layout 3</h3>
+<span>Premium Hospitality UI</span>
+</a>
+
+</div>
+
+</div>
+
+
+<!-- Salon -->
+
+<div class="category">
+
+<div class="category-title">💇 Salon Websites</div>
+
+<div class="grid">
+
+<a href="salon.html" class="card">
+<h3>Salon Layout 1</h3>
+<span>Modern Salon Website</span>
+</a>
+
+<a href="salon1.html" class="card">
+<h3>Salon Layout 2</h3>
+<span>Luxury Beauty UI</span>
+</a>
+
+<a href="salon2.html" class="card">
+<h3>Salon Layout 3</h3>
+<span>Premium Salon Design</span>
+</a>
+
+</div>
+
+</div>
+
+
+<div class="footer">
+© Demo Website Collection | Designed for Client Showcase
+</div>
+
+
 </body>
 </html>
